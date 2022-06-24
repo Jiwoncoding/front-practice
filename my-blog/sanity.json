@@ -1,0 +1,30 @@
+{
+  "root": true,
+  "api": {
+    "projectId": "2r6s1073",
+    "dataset": "my-blog"
+  },
+  "project": {
+    "name": "my-blog"
+  },
+  "plugins": [
+    "@sanity/base",
+    "@sanity/default-layout",
+    "@sanity/default-login",
+    "@sanity/desk-tool",
+    "@sanity/google-maps-input"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "@sanity/vision"
+      ]
+    }
+  },
+  "parts": [
+    {
+      "name": "part:@sanity/base/schema",
+      "path": "./schemas/schema"
+    }
+  ]
+}
