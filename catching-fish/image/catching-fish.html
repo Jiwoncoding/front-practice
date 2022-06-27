@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {font-size: 9px;}
+    #panel {width: 600px; height: 300px; border:1px solid #999; position: relative;}
+    #bar {position: absolute; left:50px; top:190px; width: 500px; height: 20px; background: #F30;}
+    #fish {position: absolute; left: 50px; top:120px;}
+    #nav {text-align: center; width: 600px;}
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script>
+    var $fish=null;
+    // 물고기가 한 번에 움직일 거리
+    var step=50;
+    var timerID=0;
+
+    $(document).ready(function(){
+      init();
+      initEvent();
+    });
+
+    // 요소 초기화
+    function init(){
+      // 물고기 노드 구하기
+      $fish=$('#fish');
+    }
+    // 이벤트 초기화
+    function initEvent(){
+      // 물고기 움직이기
+      $("#btnStart").click(function(){
+        start();
+      });
+      // 물고기 멈추기
+      $("#btnStop").click(function(){
+        stop();
+      })
+    }
+    // 물고기 움직이기 타이머 실행
+    function start(){
+      if(timerID===0){
+        timerID=setInterval(function(){
+          // 물고기 움직이기
+          moveFish();
+        }, 100);
+      }
+    }
+    // 물고기 멈추기
+    function stop(){
+      clearInterval(timerID);
+      timerID=0;
+    }
+    // 물고기 움직이기
+    function moveFish(){
+      // 다음 물고기 위치
+      var x=$fish.position().left+step;
+
+      // 물고기 위치가 430을 넘는 경우, 물고기 이동방향을 뒤쪽으로 변경해줌
+      if(x>=430){
+        x=430;
+        $fish.attr("src","fish.jpg");
+        step=50;
+      }
+      // 물고기 위치가 50보다 작은 경우. 물고기 이동방향을 앞쪽으로 변경해줌
+      if(x<50){
+        x=50;
+        $fish.attr("src","fish.jpg");
+        step=50;
+      }
+      // 물고기 위치 설정
+      $fish.css("left", x);
+    }
+  </script>
+  <title>물고기 자동으로 움직이기</title>
+</head>
+<body>
+  <div>
+    <div id="panel">
+      <div id="bar"></div>
+      <img src="./fish.jpg" alt="물고기" id="fish">
+    </div>
+    <div id="nav">
+      <button id="btnStart">시작</button>
+      <button id="btnStop">멈춤</button>
+    </div>
+  </div>
+</body>
+</html>
