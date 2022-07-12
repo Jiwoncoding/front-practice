@@ -6,7 +6,7 @@
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.3.0",
     "@testing-library/user-event": "13.5.0",
-    "axios": "^3.8.0",
+    "axios": "0.27.2",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16.3": "^1.4.1",
     "moment": "2.29.4",
@@ -30,7 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "mockserver":"json-server --watch --delay 500 --port 4000 mock/db.json",
+    "mockserver": "json-server --watch --delay 500 --port 4000 mock/db.json",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
