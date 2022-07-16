@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <style>
+
+  </style>
+  <title>끝말 잇기 게임</title>
+</head>
+<body>
+  <div><span id="order">번째 참가자</span></div>
+  <div>제시어: <span id="word"></span></div>
+  <input type="text">
+  <button>입력</button>
+
+
+  <script>
+    const number= Number(prompt('몇 명이 참가하나요?'));
+    // console.log('number', number);
+    const $button=document.querySelector('button');
+    const $input=document.querySelector('input');
+    const $word=document.querySelector('#word');
+    const $order=document.querySelector('#order');
+    let word; // 제시어
+    let newWord; // 현재 단어
+
+    const onClickButton=()=>{
+      // 제시어의 마지막 문자를 구했으니 현재 단어인 newWord의 첫 번째 문자와 비교하면 된다.
+      if(!word||word[word.length-1]===newWord[0]){
+      word=newWord;
+      // 태그.textContent : 태그 내부의 문자열을 가져옴
+      // 태그.textContent=값 : 태그 내부의 문자열을 해당 값으로 설정함
+      $word.textContent=word; // 화면에 제시어 표시
+      const order=Number($order.textContent);
+      if(order+1>number){
+        $order.textContent=1;
+      }else{
+        $order.textContent=order+1;
+      }
+      }else {
+        // 올바르지 않다
+        alert('올바르지 않은 단어입니다!');
+      }
+      $input.value=' ';  // 입력태그.value=값 : 입력창에 값을 넣음
+      $input.focus(); // 입력태그.focus() : 입력창을 하이라이트
+    };
+
+    const onInput=(e)=>{
+      newWord=e.target.value; // 입력하는 단어를 현재 단어로
+    };
+
+    $button.addEventListener('click', onClickButton);
+    $input.addEventListener('input', onInput);
+  </script>
+</body>
+</html>
