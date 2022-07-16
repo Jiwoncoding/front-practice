@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>가위 바위 보 게임 만들기</title>
+  <style>
+    #arena {
+      width: 480px;
+      height: 360px;
+      margin: 0 auto;
+      background: url('image/rays.svg') no-repeat;
+    }
+    #control {
+      position: absolute;
+      top:0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background-color: #cbc39d;
+      cursor: pointer;
+    }
+    #home, #guest {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      position: relative;
+      float: left;
+    }
+    #guest{float: right;}
+    #home>li, #guest>li {
+      width: 150px;
+      height: 150px;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 105px;
+      left:0;
+      visibility: hidden;
+    }
+    #guest>li {
+      left: auto;
+      right: 0;
+    }
+    .rock {background: url('image/rock.png') no-repeat;}
+    .paper {background: url('image/paper.png') no-repeat;}
+    .scissors {background: url('image/scissors.png') no-repeat;}
+  </style>
+</head>
+<body>
+  <div id="arena">
+    <div id="control">시작</div>
+    <ul id="home">
+      <li class="rock"></li>
+      <li class="paper"></li>
+      <li class="scissors"></li>
+    </ul>
+    <ul id="guest">
+      <li class="scissor"></li>
+      <li class="paper"></li>
+      <li class="rock"></li>
+    </ul>
+  </div>
+
+<script>
+  // 가위바위보 이미지를 교대로 보이기 위하여 setInterval()을 사용
+  // setInterval() 제어를 위해 전역 변수 myInterval을 선언
+  var myInterval=null;
+  window.onload=function(){
+    init();
+  }
+
+  function init(){
+    var images=document.querySelectorAll('li');
+    images.forEach(function(list){
+      // console.log(list.className);
+      if(list.className==='rock'){
+        list.style.visibility='visible';
+      }else{
+        list.style.visibility='hidden';
+      }
+    });
+  };
+
+document.querySelector('#control').onclick=function(){
+  // console.log(this.childNodes[0].nodeValue);
+  // console.log(this.firstChild.nodeValue); // 시작
+
+  if(this.firstChild.nodeValue=='시작'){ // 게임 시작
+    this.firstChild.nodeValue='종료/결과';
+    this.style.backgroundColor='#9da5cb';
+    this.style.color='white';
+
+    playGame();
+  }else{ // 결과 보기 및 게임 종료
+    this.style.backgroundColor='#cbc39d';
+    this.firstChild.nodeValue='시작'; // <div id="control">시작</div>에서 '시작'은 텍스트 노드로서 this.firstChild.nodeValue로 접근
+    this.style.color='black';
+
+    stopGame();
+  }
+};
+
+// 게임 시작
+function playGame(){
+  myInterval=setInterval(function(){
+    var showItem=Math.floor(Math.random()*3);
+    var images=document.querySelectorAll('li');
+
+
+    // forEach에서 list는 현재 수행 중인 선택된 객체를, index는 현재 수행 순서로 0부터 시작하는 정수
+    images.forEach(function(list, index){
+      if((index%3)===showItem){
+        list.style.visibility='visible';
+      }else{
+        list.style.visibility='hidden';
+    }
+    });
+  },250);
+};
+
+function stopGame(){
+  clearInterval(myInterval);
+
+  var homeResult, guestResult;
+  var homeItem=Math.floor(Math.random()*3);
+  var guestItem=Math.floor(Math.random()*3)+3;
+
+  var images=document.querySelectorAll('li');
+  images.forEach(function(list, index){
+    if(index==homeItem){
+      list.style.visibility='visible';
+      homeResult=list.className;
+    }else if(index==guestItem){
+      list.style.visibility='visible';
+      guestResult=list.className;
+    }else{
+      list.style.visibility='hidden';
+    }
+  });
+  setTimeout(function(){
+    resultGame(homeResult, guestResult);
+  }, 300);
+};
+
+// 게임 승패 결정
+function resultGame(home, guest){
+  if(home==guest){
+    alert('무승부');
+  }else{
+    switch(home){
+      case 'rock':
+        if(guest=='paper'){
+          alert('졌어요');
+        }else{
+          alert('이겼다')
+        }
+        break;
+        case 'paper':
+          if(guest=='scissors'){
+            alert('졌어요');
+          }else{
+            alert('이겼다')
+          }
+          break;
+          case 'scissors':
+            if(guest=='rock'){
+              alert('졌어요');
+            }else{
+              alert('이겼다');
+            }
+            break;
+    }
+  }
+};
+
+</script>
+</body>
+</html>
