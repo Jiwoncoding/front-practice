@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <title>틱택토 게임으로 이차원 배열 다루기</title>
+  <style>
+    table {border-collapse: collapse;}
+    td {border: 1px solid black; width:40px; height:40px; text-align:center;}
+  </style>
+</head>
+<body>
+  <script>
+    // 구조분해할당 const body=document.body;
+    const {body} = document;
+    const $table=document.createElement('table');
+    const $result=document.createElement('div') // 결과창
+    const rows=[];
+    let turn='0';
+
+
+    const checkWinner=(target)=>{
+      let rowIndex=target.parentNode.rowIndex;
+      let cellIndex=target.cellIndex;
+      // 유사 배열 객체에 indexOf 메서드를 사용하려면 Array.from 메서드로 유사 배열 객체를 진짜 배열로 바꾸면 된다.
+      console.log(Array.from(target.parentNode.children));
+      console.log(Array.from(target.parentNode.children).indexOf(target));
+      // 세 칸 다 채워졌나?
+      let hasWinner=false;
+      // 가로줄 검사
+      if(
+        rows[rowIndex][0].textContent===turn &&
+        rows[rowIndex][1].textContent===turn &&
+        rows[rowIndex][2].textContent===turn
+      ){
+        hasWinner=true;
+      }
+      // 세로줄 검사
+      if(
+        rows[0][cellIndex].textContent===turn &&
+        rows[1][cellIndex].textContent===turn &&
+        rows[2][cellIndex].textContent==turn
+      ){
+        hasWinner=true;
+      }
+      // 대각선 검사
+      if(
+        rows[0][0].textContent===turn &&
+        rows[1][1].textContent===turn &&
+        rows[2][2].textContent===turn
+      ){
+        hasWinner=true;
+      }
+      if(
+        rows[0][2].textContent===turn &&
+        rows[1][1].textContent===turn &&
+        rows[2][0].textContent===turn
+      ){
+        hasWinner=true;
+      }
+      return hasWinner;
+    };
+
+    const callback=(event)=>{
+      if(event.target.textContent!==' '){  // 칸이 빈칸이 아닌가?
+        console.log('빈칸이 아닙니다.');
+        return;
+      }else{ // 빈칸이라면
+        console.log('빈칸입니다.');
+        event.target.textContent=turn;
+        const hasWinner=checkWinner(event.target);
+        // 승자가 있으면
+        if(hasWinner){
+          $result.textContent=`${turn}님이 승리!`;
+          $table.removeEventListener('click', callback);
+          return;
+        }
+        // 승자가 없으면
+        let draw=rows.flat().every((cell)=>cell.textContent);
+        rows.forEach((row)=>{
+          row.forEach((cell)=>{
+            if(!cell.textContent){
+              draw=false;
+            }
+          });
+        });
+        if(draw){
+          $result.textContent=`무승부`;
+          return;
+        }
+        turn=turn==='X'? 'O' : 'X';
+    };
+
+    for(let i=1; i<=3; i++){
+      const $tr=document.createElement('tr');
+      const cells=[];
+      for(let j=1; j<=3; j++){
+        const $td=document.createElement('td');
+        cells.push($td);
+        $tr.appendChild($td);
+      }
+      rows.push(cells);
+      $table.appendChild($tr);
+      $table.addEventListener('click', callback);
+    }
+    body.appendChild($table);
+    body.appendChild($result);
+
+  </script>
+</body>
+</html>
