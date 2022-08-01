@@ -1,0 +1,9 @@
+body {
+  margin: 0;
+}
+
+#cv {
+  width: 860px;
+  height: 645px;
+  background-image: url('./image/board.jpg');
+}
